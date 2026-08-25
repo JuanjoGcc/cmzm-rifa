@@ -2,15 +2,7 @@ import { sesion } from '@/lib/auth';
 import { sql } from '@/lib/db';
 import { Cabecera } from '@/components/Cabecera';
 import { FormPremio } from '@/components/FormPremio';
-import { BotonBorrar } from '@/components/BotonBorrar';
-import { borrarPremio } from '@/app/actions';
-
-type Premio = {
-  id: number;
-  titulo: string;
-  descripcion: string | null;
-  foto: string | null;
-};
+import { TarjetaPremio, type Premio } from '@/components/TarjetaPremio';
 
 const ORDINALES = ['1er premio', '2do premio', '3er premio'];
 
@@ -47,46 +39,14 @@ export default async function PremiosPage() {
       {premios.length === 0 ? (
         <p className="text-sm text-muted">Todavía no hay premios cargados.</p>
       ) : (
-        <ul className="grid gap-px overflow-hidden rounded border border-line bg-line sm:grid-cols-2">
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {premios.map((p, i) => (
-            <li key={p.id} className="group relative bg-surface">
-              <div className="aspect-[4/3] overflow-hidden bg-raised">
-                {p.foto ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- la foto ya viene como data URL desde la BDD
-                  <img
-                    src={p.foto}
-                    alt={p.titulo}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-faint">
-                    sin foto
-                  </div>
-                )}
-              </div>
-              <div className="flex items-start justify-between gap-4 p-5">
-                <div>
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-gold">
-                    {etiqueta(i)}
-                  </div>
-                  <h2 className="mt-1.5 font-display text-base font-medium tracking-tight">
-                    {p.titulo}
-                  </h2>
-                  {p.descripcion && (
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted">
-                      {p.descripcion}
-                    </p>
-                  )}
-                </div>
-                {yo?.puedeEditar && (
-                  <BotonBorrar
-                    id={p.id}
-                    accion={borrarPremio}
-                    que={`el premio "${p.titulo}"`}
-                  />
-                )}
-              </div>
-            </li>
+            <TarjetaPremio
+              key={p.id}
+              premio={p}
+              etiqueta={etiqueta(i)}
+              puedeEditar={yo?.puedeEditar === true}
+            />
           ))}
         </ul>
       )}

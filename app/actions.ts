@@ -41,6 +41,23 @@ export async function crearPremio(fd: FormData) {
   revalidatePath('/premios');
 }
 
+export async function editarPremio(fd: FormData) {
+  await requiereEditor();
+  const premioId = v.id(fd.get('id'));
+  const titulo = v.textoRequerido(fd, 'titulo', 120);
+  const descripcion = v.texto(fd, 'descripcion', 400);
+  const foto = v.foto(fd);
+
+  await sql`
+    update premios set
+      titulo = ${titulo},
+      descripcion = ${descripcion},
+      -- Sin foto nueva queda la que había: el formulario no reenvía la vieja.
+      foto = coalesce(${foto}, foto)
+    where id = ${premioId}`;
+  revalidatePath('/premios');
+}
+
 export async function borrarPremio(premioId: number) {
   await requiereEditor();
   await sql`delete from premios where id = ${v.id(premioId)}`;
