@@ -34,7 +34,8 @@ export function MenuUsuario({ yo }: { yo: Sesion | null }) {
           className="flex items-center gap-2 rounded border border-line px-3 py-1.5 text-sm text-ink transition-colors hover:border-faint hover:bg-raised"
         >
           <IconoGoogle />
-          Entrar con Google
+          <span className="hidden sm:inline">Entrar con Google</span>
+          <span className="sm:hidden">Entrar</span>
         </button>
       </form>
     );

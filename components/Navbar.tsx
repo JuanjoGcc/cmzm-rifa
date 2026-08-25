@@ -36,15 +36,17 @@ function Tab({ href, children }: { href: string; children: React.ReactNode }) {
 export function Navbar({ titulo, yo }: { titulo: string; yo: Sesion | null }) {
   return (
     <header className="border-b border-line">
-      <div className="mx-auto flex w-full max-w-5xl items-end justify-between gap-6 px-6 pt-5 sm:px-8">
-        <div className="flex items-end gap-7">
+      <div className="mx-auto flex w-full max-w-5xl items-end justify-between gap-4 px-6 pt-5 sm:gap-6 sm:px-8">
+        <div className="flex items-end gap-4 sm:gap-7">
           <Link
             href="/premios"
             className="flex items-center gap-2 pb-3 text-gold"
             aria-label={titulo}
           >
             <Logo />
-            <span className="font-display text-[15px] font-semibold tracking-tight text-ink">
+            {/* En el teléfono el boleto solo: con el título no entran las dos
+                pestañas y el botón de entrar en la misma línea. */}
+            <span className="hidden font-display text-[15px] font-semibold tracking-tight text-ink sm:inline">
               {titulo}
             </span>
           </Link>
