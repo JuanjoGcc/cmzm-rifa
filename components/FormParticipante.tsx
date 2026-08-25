@@ -56,7 +56,7 @@ export function FormParticipante() {
         <button
           type="submit"
           disabled={pendiente}
-          className="h-[38px] rounded border border-gold/40 bg-gold/10 px-4 text-sm text-gold transition-colors hover:bg-gold/20 disabled:opacity-50"
+          className="h-[38px] rounded border border-acento/40 bg-acento/10 px-4 text-sm text-acento transition-colors hover:bg-acento/20 disabled:opacity-50"
         >
           {pendiente ? 'Guardando…' : 'Anotar'}
         </button>

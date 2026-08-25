@@ -1,23 +1,23 @@
 @import 'tailwindcss';
 
 /*
- * Paleta oscura, cálida y de bajo contraste. Las decisiones que importan y por
- * qué están en CLAUDE.md ("Guía de diseño"); acá solo viven los valores.
+ * Paleta clara de papel con acento azul marino. Las decisiones que importan y
+ * por qué están en CLAUDE.md ("Guía de diseño"); acá solo viven los valores.
  */
 /* Ojo al nombrar colores: Tailwind arma la utilidad desde el nombre de la
    variable, así que un `--color-base` genera un `text-base` que le gana al
    tamaño de fuente del mismo nombre y pinta el texto del color del fondo. */
 @theme {
-  --color-fondo: #0e0f11;
-  --color-surface: #15171a;
-  --color-raised: #1b1e22;
-  --color-line: #24282e;
-  --color-ink: #e6e3de;
-  --color-muted: #8a8d94;
-  --color-faint: #5c6068;
-  --color-gold: #d9a441;
-  --color-gold-dim: #6b5220;
-  --color-danger: #c4614f;
+  --color-fondo: #f6f5f2;
+  --color-surface: #ffffff;
+  --color-raised: #eceae5;
+  --color-line: #dcd9d2;
+  --color-ink: #16181d;
+  --color-muted: #5c5f68;
+  --color-faint: #8b8e97;
+  --color-acento: #000080;
+  --color-acento-suave: #c8caea;
+  --color-danger: #b23a2b;
 
   --font-sans: var(--fuente-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--fuente-display), var(--fuente-sans), sans-serif;
@@ -26,9 +26,25 @@
   --radius-DEFAULT: 4px;
 }
 
+/* El script del layout resuelve "sistema" y deja `data-modo` ya escrito, así
+   que acá alcanza un solo bloque y no hay que repetirlo dentro de un media. */
+:root[data-modo='oscuro'] {
+  --color-fondo: #0e0f11;
+  --color-surface: #15171a;
+  --color-raised: #1b1e22;
+  --color-line: #24282e;
+  --color-ink: #e6e3de;
+  --color-muted: #8a8d94;
+  --color-faint: #5c6068;
+  --color-acento: #8ea2e8;
+  --color-acento-suave: #2b3358;
+  --color-danger: #c4614f;
+  color-scheme: dark;
+}
+
 html {
   background: var(--color-fondo);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -46,12 +62,6 @@ body {
 }
 
 ::selection {
-  background: var(--color-gold-dim);
+  background: var(--color-acento-suave);
   color: var(--color-ink);
-}
-
-input,
-textarea,
-select {
-  color-scheme: dark;
 }

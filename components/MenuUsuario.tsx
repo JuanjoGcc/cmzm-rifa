@@ -45,7 +45,7 @@ export function MenuUsuario({ yo }: { yo: Sesion | null }) {
   // navegable con teclado y no baja un solo kilobyte de JavaScript.
   return (
     <details className="group relative">
-      <summary className="flex cursor-pointer list-none items-center gap-2 rounded outline-none focus-visible:ring-1 focus-visible:ring-gold">
+      <summary className="flex cursor-pointer list-none items-center gap-2 rounded outline-none focus-visible:ring-1 focus-visible:ring-acento">
         {yo.foto ? (
           // eslint-disable-next-line @next/next/no-img-element -- avatar de Google, sin optimizar
           <img
@@ -64,7 +64,7 @@ export function MenuUsuario({ yo }: { yo: Sesion | null }) {
         <div className="px-3 py-2">
           <div className="truncate font-medium">{yo.nombre}</div>
           <div className="truncate text-xs text-muted">{yo.email}</div>
-          <div className="mt-1.5 text-xs text-gold">
+          <div className="mt-1.5 text-xs text-acento">
             {yo.superAdmin
               ? 'Super admin'
               : yo.puedeEditar

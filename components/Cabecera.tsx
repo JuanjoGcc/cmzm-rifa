@@ -24,7 +24,7 @@ export function Cabecera({
       </div>
       {dato && (
         <div className="shrink-0 text-right">
-          <div className="cifra text-3xl font-medium text-gold">{dato}</div>
+          <div className="cifra text-3xl font-medium text-acento">{dato}</div>
           <div className="mt-1 text-[11px] uppercase tracking-[0.14em] text-faint">
             {datoEtiqueta}
           </div>

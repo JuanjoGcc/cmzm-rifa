@@ -90,7 +90,7 @@ export default async function AdminPage() {
               </td>
               <td className="py-3 pl-4 text-right">
                 {esSuperAdmin(u.email) ? (
-                  <span className="text-xs text-gold">Super admin</span>
+                  <span className="text-xs text-acento">Super admin</span>
                 ) : (
                   <InterruptorPermiso
                     email={u.email}
@@ -154,7 +154,7 @@ export default async function AdminPage() {
           <div>
             <button
               type="submit"
-              className="rounded border border-gold/40 bg-gold/10 px-4 py-2 text-sm text-gold transition-colors hover:bg-gold/20"
+              className="rounded border border-acento/40 bg-acento/10 px-4 py-2 text-sm text-acento transition-colors hover:bg-acento/20"
             >
               Guardar
             </button>

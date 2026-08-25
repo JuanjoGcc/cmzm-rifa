@@ -1,7 +1,7 @@
 /** Estilos compartidos de formulario. Sin librería: son tres clases. */
 
 export const claseInput =
-  'w-full rounded border border-line bg-fondo px-3 py-2 text-sm text-ink outline-none placeholder:text-faint focus:border-gold/60';
+  'w-full rounded border border-line bg-fondo px-3 py-2 text-sm text-ink outline-none placeholder:text-faint focus:border-acento/60';
 
 export function Campo({
   etiqueta,
