@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Sesion } from '@/lib/auth';
 import { MenuUsuario } from './MenuUsuario';
+import { Tab } from './Tab';
 
 /** Marca de la rifa: un boleto con el troquel al medio. */
 function Logo() {
@@ -22,16 +23,6 @@ function Logo() {
   );
 }
 
-function Tab({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="-mb-px border-b border-transparent px-1 pb-3 text-sm text-muted transition-colors hover:border-line hover:text-ink"
-    >
-      {children}
-    </Link>
-  );
-}
 
 export function Navbar({ titulo, yo }: { titulo: string; yo: Sesion | null }) {
   return (
