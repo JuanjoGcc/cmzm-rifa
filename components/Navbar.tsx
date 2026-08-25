@@ -1,26 +1,21 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Sesion } from '@/lib/auth';
 import { MenuUsuario } from './MenuUsuario';
 import { SelectorTema } from './SelectorTema';
 import { Tab } from './Tab';
 
-/** Marca de la rifa: un boleto con el troquel al medio. */
+/** Marca de la rifa: la abuela con el pollo. */
 function Logo() {
   return (
-    <svg viewBox="0 0 28 18" className="h-4 w-6 shrink-0" aria-hidden="true">
-      <path
-        d="M1 1h26v4a4 4 0 0 0 0 8v4H1v-4a4 4 0 0 0 0-8V1Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M14 3v2m0 3v2m0 3v2"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
+    <Image
+      src="/logo.png"
+      alt=""
+      width={28}
+      height={28}
+      priority
+      className="h-7 w-7 shrink-0 rounded-full"
+    />
   );
 }
 
