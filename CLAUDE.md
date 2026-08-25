@@ -135,13 +135,23 @@ botón de entrar.
   qué, y no pasa de dos líneas. Ver el `CLAUDE.md` global.
 - Nada de `any`. `npx tsc --noEmit` tiene que pasar limpio.
 
+## Dominios
+
+| Entorno | URL |
+|---|---|
+| Local | `http://localhost:3000` |
+| Producción | `https://cmzm-rifa.vercel.app` |
+
+Repo: `github.com/JuanjoGcc/cmzm-rifa`. Proyecto de Vercel: `cmzm-rifa`, cuenta
+personal (`juanjos-projects-a49008cd`), plan hobby.
+
 ## Configurar el login en Google Cloud
 
 Mismos pasos que el repo de vigas, cambiando a dónde vuelve el callback: acá es
 el dominio de la app, no el de un backend aparte.
 
 1. [console.cloud.google.com](https://console.cloud.google.com) → crear un
-   proyecto (`rifa-mzm`).
+   proyecto (`cmzm-rifa`).
 2. **APIs y servicios → Pantalla de consentimiento de OAuth**:
    - Tipo de usuario: **Externo**.
    - Nombre de la app, correo de asistencia y correo de contacto: los tuyos.
@@ -150,20 +160,30 @@ el dominio de la app, no el de un backend aparte.
    - Publicá la app. En modo *Prueba* solo entran los emails que agregues a mano
      y las sesiones se caen cada 7 días.
 3. **Credenciales → Crear credenciales → ID de cliente de OAuth**, tipo
-   **Aplicación web**:
-   - Orígenes autorizados: `http://localhost:3000` y `https://<tu-app>.vercel.app`
-   - **URI de redirección autorizados** — los dos, exactos:
-     - `http://localhost:3000/api/auth/callback/google`
-     - `https://<tu-app>.vercel.app/api/auth/callback/google`
+   **Aplicación web**. Copiar y pegar tal cual:
+
+   **Orígenes autorizados de JavaScript**
+   ```
+   http://localhost:3000
+   https://cmzm-rifa.vercel.app
+   ```
+
+   **URI de redireccionamiento autorizados**
+   ```
+   http://localhost:3000/api/auth/callback/google
+   https://cmzm-rifa.vercel.app/api/auth/callback/google
+   ```
 4. Copiá el *Client ID* y el *Client secret* a `AUTH_GOOGLE_ID` y
-   `AUTH_GOOGLE_SECRET`.
+   `AUTH_GOOGLE_SECRET`, en `.env.local` y en Vercel.
 
 Los dos errores que se cometen siempre: olvidar el path completo
 `/api/auth/callback/google` (poner solo el dominio no sirve), y agregar el de
 producción pero no el de local.
 
-Cada dominio nuevo (preview de Vercel, dominio propio) hay que autorizarlo
-también, o el login devuelve `redirect_uri_mismatch`.
+Cada dominio nuevo hay que autorizarlo también o el login devuelve
+`redirect_uri_mismatch`. **Los previews de Vercel son un dominio distinto en
+cada deploy**, así que el login solo anda en producción y en local; para probar
+un preview, agregá su URL a mano o usá `vercel --prod`.
 
 ## Postgres en Vercel
 
@@ -175,9 +195,20 @@ también, o el login devuelve `redirect_uri_mismatch`.
    psql "<connection string de Neon>" -f schema.sql
    ```
 4. Las que sí van a mano en **Settings → Environment Variables**:
-   `AUTH_SECRET` (uno nuevo, distinto al de local), `AUTH_GOOGLE_ID`,
-   `AUTH_GOOGLE_SECRET`, `SUPER_ADMIN_EMAILS`.
-5. Redeploy: las variables de entorno se leen en build, no en caliente.
+
+   | Variable | Valor |
+   |---|---|
+   | `AUTH_SECRET` | `npx auth secret --raw`, uno nuevo distinto al de local |
+   | `AUTH_GOOGLE_ID` | de Google Cloud |
+   | `AUTH_GOOGLE_SECRET` | de Google Cloud |
+   | `SUPER_ADMIN_EMAILS` | tu email, el que vas a usar para entrar |
+
+   `AUTH_URL` no hace falta: Auth.js la deduce de `VERCEL_URL`.
+5. Redeploy: las variables se leen en build, no en caliente.
+
+Hasta que exista `POSTGRES_URL` la app buildea bien pero todas las páginas
+devuelven 500 con "Falta POSTGRES_URL": son dinámicas y consultan la BDD en
+cada request. Es el error esperado, no un deploy roto.
 
 Usar la string **pooled** (la que dice `-pooler`), no la directa: las funciones
 serverless abren y cierran conexiones todo el tiempo y sin pooler Neon las
