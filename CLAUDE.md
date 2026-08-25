@@ -213,3 +213,24 @@ cada request. Es el error esperado, no un deploy roto.
 Usar la string **pooled** (la que dice `-pooler`), no la directa: las funciones
 serverless abren y cierran conexiones todo el tiempo y sin pooler Neon las
 rechaza. `lib/db.ts` ya prende TLS para cualquier host que no sea localhost.
+
+## Operar el deployment
+
+Cosas que costaron encontrar y no se deducen mirando el código:
+
+- **Hay dos cuentas de Vercel.** El proyecto vive en `juanjos-projects-a49008cd`
+  (usuario `juanjogcc`), no en `juangarcia-7716`, que es donde está el repo de
+  vigas. Si `vercel link` dice *"The specified scope does not exist"*, el CLI
+  está logueado en la otra: `vercel login` y elegir la correcta.
+- **El `list_projects` del MCP de Vercel devuelve vacío** para esta cuenta
+  aunque el proyecto exista. No sirve para inspeccionar; usar el CLI.
+- **Correr migraciones desde un agente no funciona.** El entorno redacta los
+  secretos: `vercel env pull` escribe `POSTGRES_URL="[SENSITIVE]"` en el
+  archivo, y `psql` termina pegándole al Postgres local. Las migraciones se
+  corren desde una terminal de verdad, o pegando `schema.sql` en el SQL Editor
+  de Neon (Vercel → Storage → la base → Open in Neon). El esquema es
+  idempotente, así que correrlo de más no rompe nada.
+- **Las variables de entorno se congelan por deployment.** Agregar una no
+  alcanza: hay que redeployar (`vercel deploy --prod`) o no la ve el runtime.
+- Una variable cargada vacía se ve igual que una que falta. Si algo no anda y
+  la variable "está", sospechar del valor antes que de la ausencia.
