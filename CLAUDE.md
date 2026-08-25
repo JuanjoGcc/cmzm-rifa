@@ -67,12 +67,14 @@ un hero enorme arriba. Nada de eso acá.
 
 **Lo que sí:**
 
-- **Oscuro cálido, no negro azulado.** Base `#0e0f11`, superficie `#15171a`. El
-  texto es `#e6e3de` (blanco roto), nunca `#fff`: el contraste puro cansa y se
-  lee sintético.
-- **Un solo acento**, dorado apagado `#d9a441`, y se usa poco: la etiqueta del
-  premio, la cifra grande, el estado del usuario. Si el acento está en todos
-  lados, deja de señalar.
+- **Claro de papel, no blanco puro.** Base `#f6f5f2`, superficie `#ffffff`. El
+  texto es `#16181d`, nunca `#000`: el contraste puro cansa y se lee sintético.
+- **Claro por defecto, con selector Sistema/Claro/Oscuro** en la navbar. El tema
+  oscuro son los mismos tokens con otros valores (`:root[data-modo='oscuro']`),
+  así que ningún componente sabe en qué modo está.
+- **Un solo acento**, azul marino `#000080` (token `acento`), y se usa poco: la
+  etiqueta del premio, la cifra grande, el estado del usuario. Si el acento está
+  en todos lados, deja de señalar.
 - **Los números son el contenido.** Van en IBM Plex Mono con `tabular-nums`
   (clase `.cifra`) para que las columnas se alineen y las cifras no bailen al
   actualizarse. Esta es la decisión que más hace que la página se lea como una
@@ -80,7 +82,9 @@ un hero enorme arriba. Nada de eso acá.
 - **Tipografía en tres roles**: Space Grotesk para títulos, IBM Plex Sans para
   texto, IBM Plex Mono para cifras. Mismo criterio que el repo de vigas.
 - **Líneas de un píxel, cero sombras.** La jerarquía la dan los bordes y el
-  espacio, no las sombras. Radio 4px, no 16px.
+  espacio, no las sombras. Radio 4px (8px en las tarjetas de premio), no 16px.
+- **La navbar va abajo en el teléfono** y arriba de `sm`. La app se instala como
+  PWA (`app/manifest.ts`) y ahí es donde llega el pulgar.
 - **Alineado a la izquierda.** Los títulos de sección no van centrados. El dato
   grande (números vendidos, fecha del sorteo) va a la derecha del título, en la
   misma línea de base: asimétrico a propósito.

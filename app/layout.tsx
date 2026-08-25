@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { IBM_Plex_Mono, IBM_Plex_Sans, Space_Grotesk } from 'next/font/google';
 import { sql } from '@/lib/db';
 import { sesion } from '@/lib/auth';
@@ -22,8 +22,18 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Rifa',
+  title: 'Rifa CMZM',
   description: 'Premios y participantes de la rifa.',
+  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Rifa CMZM' },
+};
+
+// Corre antes de pintar: si el tema se resolviera en React, la página arrancaría
+// clara y saltaría a oscura en la hidratación.
+const SCRIPT_TEMA = `try{var t=localStorage.getItem('tema')||'sistema',d=document.documentElement;d.dataset.tema=t;d.dataset.modo=t==='sistema'?(matchMedia('(prefers-color-scheme: dark)').matches?'oscuro':'claro'):t}catch(e){}`;
+
+export const viewport: Viewport = {
+  themeColor: '#000080',
+  viewportFit: 'cover',
 };
 
 // El layout lee el título de la BDD, así que sin esto Next intenta prerenderizar
@@ -40,12 +50,15 @@ export default async function RootLayout({
   const yo = await sesion();
 
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />
+      </head>
       <body
         className={`${sans.variable} ${display.variable} ${mono.variable} font-sans`}
       >
-        <Navbar titulo={config?.titulo ?? 'Rifa'} yo={yo} />
-        <main className="mx-auto w-full max-w-5xl px-6 pb-24 pt-10 sm:px-8">
+        <Navbar titulo={config?.titulo ?? 'Rifa CMZM'} yo={yo} />
+        <main className="mx-auto w-full max-w-6xl px-6 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-10 sm:px-8 sm:pb-24">
           {children}
         </main>
       </body>
