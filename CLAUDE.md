@@ -91,7 +91,8 @@ un hero enorme arriba. Nada de eso acá.
 - **Etiquetas en versalita espaciada** (`text-[11px] uppercase tracking-[0.14em]`)
   para los rótulos de campo y de columna. Es el detalle que separa una tabla
   diseñada de una tabla por defecto.
-- **Sin emojis.** El único icono es el boleto del logo, dibujado a mano en SVG.
+- **Sin emojis.** La única imagen de marca es el logo de la abuela
+  (`public/logo.png`, que es también el favicon y el icono de la PWA).
 - **Tablas de verdad para datos tabulares.** Una `<table>` con reglas finas, sin
   cebra y sin una tarjeta por fila.
 
@@ -104,7 +105,7 @@ el usuario puede editar.
 ```
 app/
   layout.tsx            navbar + fuentes; lee el título de la rifa
-  page.tsx              redirige a /premios
+  page.tsx              inicio: de qué es la rifa, cuotas y quién vende
   premios/              público; el formulario aparece solo si podés editar
   participantes/        idem, con la tabla y el contador −/+
   admin/                solo super admin: permisos y datos de la rifa

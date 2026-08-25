@@ -1,26 +1,21 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Sesion } from '@/lib/auth';
 import { MenuUsuario } from './MenuUsuario';
 import { SelectorTema } from './SelectorTema';
 import { Tab } from './Tab';
 
-/** Marca de la rifa: un boleto con el troquel al medio. */
+/** Marca de la rifa: la abuela con el pollo. */
 function Logo() {
   return (
-    <svg viewBox="0 0 28 18" className="h-4 w-6 shrink-0" aria-hidden="true">
-      <path
-        d="M1 1h26v4a4 4 0 0 0 0 8v4H1v-4a4 4 0 0 0 0-8V1Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M14 3v2m0 3v2m0 3v2"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
+    <Image
+      src="/logo.png"
+      alt=""
+      width={28}
+      height={28}
+      priority
+      className="h-7 w-7 shrink-0 rounded-full"
+    />
   );
 }
 
@@ -28,6 +23,9 @@ function Logo() {
 export function Navbar({ titulo, yo }: { titulo: string; yo: Sesion | null }) {
   const tabs = (abajo?: boolean) => (
     <>
+      <Tab href="/" abajo={abajo}>
+        Inicio
+      </Tab>
       <Tab href="/premios" abajo={abajo}>
         Premios
       </Tab>
@@ -48,7 +46,7 @@ export function Navbar({ titulo, yo }: { titulo: string; yo: Sesion | null }) {
         <div className="mx-auto flex w-full max-w-6xl items-end justify-between gap-4 px-6 pt-5 sm:gap-6 sm:px-8">
           <div className="flex items-end gap-4 sm:gap-7">
             <Link
-              href="/premios"
+              href="/"
               className="flex items-center gap-2 pb-3 text-acento"
               aria-label={titulo}
             >
