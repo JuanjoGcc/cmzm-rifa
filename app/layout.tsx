@@ -26,13 +26,16 @@ export const metadata: Metadata = {
   description: 'Premios y participantes de la rifa.',
 };
 
+// El layout lee el título de la BDD, así que sin esto Next intenta prerenderizar
+// `/` en build y el deploy se cae antes de que exista POSTGRES_URL. Además es lo
+// que queremos: los números se venden mientras la gente mira la página.
+export const dynamic = 'force-dynamic';
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // El layout es async y toca la BDD, así que toda la app se renderiza por
-  // request. Es lo que queremos: los números se venden mientras la gente mira.
   const [config] = await sql<{ titulo: string }>`select titulo from config`;
   const yo = await sesion();
 
