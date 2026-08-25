@@ -21,13 +21,6 @@ const DESTINOS = [
   },
 ];
 
-const CUOTAS = [
-  { cuanto: 15, quienes: 'Garrochistas' },
-  { cuanto: 7, quienes: 'El resto del club' },
-];
-
-const LOGISTICA = ['Juanjo García', 'Domingo Bermúdez'];
-
 export default async function Inicio() {
   const [[config], [premios], [vendidos]] = await Promise.all([
     sql<{
@@ -117,7 +110,7 @@ export default async function Inicio() {
         </div>
       )}
 
-      <section className="mt-14 grid gap-10 border-b border-line pb-12 sm:grid-cols-[14rem_1fr] sm:gap-16">
+      <section className="mt-14 grid gap-10 sm:grid-cols-[14rem_1fr] sm:gap-16">
         <h2 className="font-display text-lg font-medium tracking-tight">
           En qué se usa la plata
         </h2>
@@ -133,49 +126,6 @@ export default async function Inicio() {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="mt-12 grid gap-10 border-b border-line pb-12 sm:grid-cols-[14rem_1fr] sm:gap-16">
-        <div>
-          <h2 className="font-display text-lg font-medium tracking-tight">
-            Cuánto vende cada uno
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted">
-            La rifa es «obligatoria»: a cada uno le toca su cuota.
-          </p>
-        </div>
-        <dl className="flex gap-12 sm:gap-20">
-          {CUOTAS.map((c) => (
-            <div key={c.quienes}>
-              <dd className="cifra text-5xl font-medium text-acento">
-                {c.cuanto}
-              </dd>
-              <dt className="mt-2 text-[11px] uppercase tracking-[0.14em] text-faint">
-                {c.quienes}
-              </dt>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className="mt-12 grid gap-10 sm:grid-cols-[14rem_1fr] sm:gap-16">
-        <h2 className="font-display text-lg font-medium tracking-tight">
-          Cómo comprar
-        </h2>
-        <div>
-          <p className="max-w-xl text-sm leading-relaxed text-muted">
-            Los números se venden en persona y se anotan acá mismo. Si querés
-            comprar, o ya vendiste y hay que sumarlo a la lista, hablá con
-            cualquiera de los dos:
-          </p>
-          <ul className="mt-5 flex flex-wrap gap-x-8 gap-y-2">
-            {LOGISTICA.map((quien) => (
-              <li key={quien} className="text-sm font-medium">
-                {quien}
-              </li>
-            ))}
-          </ul>
-        </div>
       </section>
 
       <dl className="mt-14 grid grid-cols-2 gap-y-6 border-t border-line pt-5 sm:grid-cols-4">
