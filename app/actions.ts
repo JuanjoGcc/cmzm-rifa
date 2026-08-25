@@ -1,12 +1,18 @@
 'use server';
 
 // Todas las escrituras de la app. Una server action es un endpoint HTTP: si
-// alguna no arranca con `requiereEditor()` o `requiereSuperAdmin()`, queda abierta.
+// alguna no arranca con `requiereEditor()` o `requiereSuperAdmin()`, queda abierta,
+// y sus argumentos los elige el cliente, no el formulario (ver `lib/validar.ts`).
 
 import { revalidatePath } from 'next/cache';
-import { requiereEditor, requiereSuperAdmin, sesion } from '@/lib/auth';
-import { signIn, signOut } from '@/lib/auth';
+import {
+  requiereEditor,
+  requiereSuperAdmin,
+  signIn,
+  signOut,
+} from '@/lib/auth';
 import { sql } from '@/lib/db';
+import * as v from '@/lib/validar';
 
 export async function entrar() {
   await signIn('google');
@@ -20,28 +26,24 @@ export async function salir() {
 
 export async function crearPremio(fd: FormData) {
   await requiereEditor();
-  const titulo = String(fd.get('titulo') ?? '').trim();
-  if (!titulo) throw new Error('El premio necesita un título.');
-
-  const foto = String(fd.get('foto') ?? '') || null;
-  if (foto && !foto.startsWith('data:image/')) {
-    throw new Error('La foto no es una imagen válida.');
-  }
+  const titulo = v.textoRequerido(fd, 'titulo', 120);
+  const descripcion = v.texto(fd, 'descripcion', 400);
+  const foto = v.foto(fd);
 
   await sql`
     insert into premios (titulo, descripcion, foto, orden)
     values (
       ${titulo},
-      ${String(fd.get('descripcion') ?? '').trim() || null},
+      ${descripcion},
       ${foto},
       coalesce((select max(orden) + 1 from premios), 1)
     )`;
   revalidatePath('/premios');
 }
 
-export async function borrarPremio(id: number) {
+export async function borrarPremio(premioId: number) {
   await requiereEditor();
-  await sql`delete from premios where id = ${id}`;
+  await sql`delete from premios where id = ${v.id(premioId)}`;
   revalidatePath('/premios');
 }
 
@@ -49,17 +51,13 @@ export async function borrarPremio(id: number) {
 
 export async function crearParticipante(fd: FormData) {
   await requiereEditor();
-  const nombre = String(fd.get('nombre') ?? '').trim();
-  if (!nombre) throw new Error('Falta el nombre.');
-
-  const numeros = Number(fd.get('numeros'));
-  if (!Number.isInteger(numeros) || numeros < 1) {
-    throw new Error('Los números tienen que ser un entero mayor a cero.');
-  }
+  const nombre = v.textoRequerido(fd, 'nombre', 120);
+  const numeros = v.entero(fd.get('numeros'), 1, 100_000, 'Los números');
+  const nota = v.texto(fd, 'nota', 200);
 
   await sql`
     insert into participantes (nombre, numeros, nota)
-    values (${nombre}, ${numeros}, ${String(fd.get('nota') ?? '').trim() || null})`;
+    values (${nombre}, ${numeros}, ${nota})`;
   revalidatePath('/participantes');
 }
 
@@ -68,17 +66,18 @@ export async function crearParticipante(fd: FormData) {
  * En la vida real se vende de a poco y la misma persona vuelve a comprar; sin
  * esto habría que borrar la fila y recrearla con el total a mano.
  */
-export async function ajustarNumeros(id: number, delta: number) {
+export async function ajustarNumeros(participanteId: number, delta: number) {
   await requiereEditor();
+  const d = v.entero(delta, -1000, 1000, 'El ajuste');
   await sql`
-    update participantes set numeros = numeros + ${delta}
-    where id = ${id} and numeros + ${delta} >= 1`;
+    update participantes set numeros = numeros + ${d}
+    where id = ${v.id(participanteId)} and numeros + ${d} >= 1`;
   revalidatePath('/participantes');
 }
 
-export async function borrarParticipante(id: number) {
+export async function borrarParticipante(participanteId: number) {
   await requiereEditor();
-  await sql`delete from participantes where id = ${id}`;
+  await sql`delete from participantes where id = ${v.id(participanteId)}`;
   revalidatePath('/participantes');
 }
 
@@ -86,13 +85,14 @@ export async function borrarParticipante(id: number) {
 
 export async function guardarConfig(fd: FormData) {
   await requiereEditor();
-  const precio = Number(fd.get('precio_numero'));
+  const precio = String(fd.get('precio_numero') ?? '').trim();
+
   await sql`
     update config set
-      titulo = ${String(fd.get('titulo') ?? '').trim() || 'Rifa'},
-      bajada = ${String(fd.get('bajada') ?? '').trim() || null},
-      fecha_sorteo = ${String(fd.get('fecha_sorteo') ?? '') || null},
-      precio_numero = ${Number.isFinite(precio) && precio > 0 ? precio : null}
+      titulo = ${v.texto(fd, 'titulo', 80) ?? 'Rifa'},
+      bajada = ${v.texto(fd, 'bajada', 200)},
+      fecha_sorteo = ${v.fecha(fd, 'fecha_sorteo')},
+      precio_numero = ${precio ? v.entero(precio, 0, 100_000_000, 'El precio') : null}
     where id = true`;
   revalidatePath('/', 'layout');
 }
@@ -106,12 +106,7 @@ export async function fijarPermiso(email: string, puedeEditar: boolean) {
   if (email.toLowerCase() === admin.email) return;
 
   await sql`
-    update usuarios set puede_editar = ${puedeEditar}
+    update usuarios set puede_editar = ${puedeEditar === true}
     where email = ${email.toLowerCase()}`;
   revalidatePath('/admin');
-}
-
-/** Para que la UI sepa qué mostrar. No expone nada que no sea del propio usuario. */
-export async function miSesion() {
-  return sesion();
 }
