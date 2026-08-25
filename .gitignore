@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# .env.example sí se versiona: es la lista de qué hay que completar.
+!.env.example
