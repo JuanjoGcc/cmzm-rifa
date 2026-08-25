@@ -104,7 +104,7 @@ el usuario puede editar.
 ```
 app/
   layout.tsx            navbar + fuentes; lee el título de la rifa
-  page.tsx              redirige a /premios
+  page.tsx              inicio: de qué es la rifa, cuotas y quién vende
   premios/              público; el formulario aparece solo si podés editar
   participantes/        idem, con la tabla y el contador −/+
   admin/                solo super admin: permisos y datos de la rifa

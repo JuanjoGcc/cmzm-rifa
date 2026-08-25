@@ -28,6 +28,9 @@ function Logo() {
 export function Navbar({ titulo, yo }: { titulo: string; yo: Sesion | null }) {
   const tabs = (abajo?: boolean) => (
     <>
+      <Tab href="/" abajo={abajo}>
+        Inicio
+      </Tab>
       <Tab href="/premios" abajo={abajo}>
         Premios
       </Tab>
@@ -48,7 +51,7 @@ export function Navbar({ titulo, yo }: { titulo: string; yo: Sesion | null }) {
         <div className="mx-auto flex w-full max-w-6xl items-end justify-between gap-4 px-6 pt-5 sm:gap-6 sm:px-8">
           <div className="flex items-end gap-4 sm:gap-7">
             <Link
-              href="/premios"
+              href="/"
               className="flex items-center gap-2 pb-3 text-acento"
               aria-label={titulo}
             >

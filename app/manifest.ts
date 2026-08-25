@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Rifa CMZM',
     short_name: 'Rifa CMZM',
-    start_url: '/premios',
+    start_url: '/',
     display: 'standalone',
     background_color: '#f6f5f2',
     theme_color: '#000080',
