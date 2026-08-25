@@ -1,26 +1,57 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Paleta oscura, cálida y de bajo contraste. Las decisiones que importan y por
+ * qué están en CLAUDE.md ("Guía de diseño"); acá solo viven los valores.
+ */
+/* Ojo al nombrar colores: Tailwind arma la utilidad desde el nombre de la
+   variable, así que un `--color-base` genera un `text-base` que le gana al
+   tamaño de fuente del mismo nombre y pinta el texto del color del fondo. */
+@theme {
+  --color-fondo: #0e0f11;
+  --color-surface: #15171a;
+  --color-raised: #1b1e22;
+  --color-line: #24282e;
+  --color-ink: #e6e3de;
+  --color-muted: #8a8d94;
+  --color-faint: #5c6068;
+  --color-gold: #d9a441;
+  --color-gold-dim: #6b5220;
+  --color-danger: #c4614f;
+
+  --font-sans: var(--fuente-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--fuente-display), var(--fuente-sans), sans-serif;
+  --font-mono: var(--fuente-mono), ui-monospace, Menlo, monospace;
+
+  --radius-DEFAULT: 4px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-fondo);
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-fondo);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Los números son el contenido de esta página: van en mono, tabulares, para
+   que las columnas se alineen y las cifras no bailen al actualizarse. */
+.cifra {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: var(--color-gold-dim);
+  color: var(--color-ink);
+}
+
+input,
+textarea,
+select {
+  color-scheme: dark;
 }
