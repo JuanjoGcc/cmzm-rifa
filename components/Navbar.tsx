@@ -29,9 +29,11 @@ export function Navbar({ titulo, yo }: { titulo: string; yo: Sesion | null }) {
       <Tab href="/premios" abajo={abajo}>
         Premios
       </Tab>
-      <Tab href="/participantes" abajo={abajo}>
-        Participantes
-      </Tab>
+      {yo?.puedeEditar && (
+        <Tab href="/participantes" abajo={abajo}>
+          Participantes
+        </Tab>
+      )}
       {yo?.superAdmin && (
         <Tab href="/admin" abajo={abajo}>
           Accesos
