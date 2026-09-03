@@ -20,7 +20,7 @@ export function Portada() {
   }, []);
 
   return (
-    <div className="relative mt-10 aspect-video overflow-hidden rounded-lg border border-line bg-raised">
+    <div className="relative mt-10 aspect-[4/3] overflow-hidden rounded-lg border border-line bg-raised sm:aspect-video">
       {FOTOS.map((f, n) => (
         <Image
           key={f.src}
@@ -35,7 +35,7 @@ export function Portada() {
         />
       ))}
 
-      <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2">
+      <div className="absolute inset-x-0 bottom-0 flex justify-center gap-1">
         {FOTOS.map((f, n) => (
           <button
             key={f.src}
@@ -43,10 +43,16 @@ export function Portada() {
             onClick={() => setActual(n)}
             aria-label={`Foto ${n + 1} de ${FOTOS.length}`}
             aria-current={n === actual}
-            className={`h-1.5 w-6 rounded-full transition-colors ${
-              n === actual ? 'bg-white' : 'bg-white/40 hover:bg-white/70'
-            }`}
-          />
+            className="group px-2 py-4"
+          >
+            <span
+              className={`block h-1.5 w-6 rounded-full transition-colors ${
+                n === actual
+                  ? 'bg-white'
+                  : 'bg-white/40 group-hover:bg-white/70'
+              }`}
+            />
+          </button>
         ))}
       </div>
     </div>
