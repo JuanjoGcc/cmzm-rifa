@@ -56,6 +56,10 @@ Lo que hace viable esa decisión es que **el navegador reescala la foto antes de
 subirla** (`components/FormPremio.tsx`, lado máximo 1000px): una foto de celular
 sin tocar serían ~4 MB de base64 por fila. Con el reescalado son ~100 KB.
 
+Las fotos del team que van pasando en el inicio son la excepción: son fijas y
+viven en `public/portada/`, así que van con el deploy y no hay nada que subir
+ni migrar.
+
 Techo conocido: si alguna vez hay decenas de premios o hace falta el original,
 se pasa a Vercel Blob y la columna guarda la URL. Hasta entonces esto sobra.
 
@@ -106,7 +110,7 @@ el usuario puede editar.
 ```
 app/
   layout.tsx            navbar + fuentes; lee el título de la rifa
-  page.tsx              inicio: de qué es la rifa, cuotas y quién vende
+  page.tsx              inicio: de qué es la rifa, las fotos del team y las cifras
   premios/              público; el formulario aparece solo si podés editar
   participantes/        solo editores: la tabla y el contador −/+
   admin/                solo super admin: permisos y datos de la rifa
