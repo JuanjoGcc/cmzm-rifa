@@ -1,4 +1,5 @@
-/** Título de sección con su bajada y, opcionalmente, un dato grande al costado. */
+/** Título de sección con su bajada y, opcionalmente, un dato grande al costado
+ *  (debajo en el teléfono, donde no entra al lado). */
 export function Cabecera({
   titulo,
   bajada,
@@ -11,7 +12,7 @@ export function Cabecera({
   datoEtiqueta?: string;
 }) {
   return (
-    <div className="mb-10 flex items-end justify-between gap-8 border-b border-line pb-6">
+    <div className="mb-10 flex flex-col items-start gap-4 border-b border-line pb-6 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
       <div>
         <h1 className="font-display text-2xl font-semibold tracking-tight">
           {titulo}
@@ -23,7 +24,7 @@ export function Cabecera({
         )}
       </div>
       {dato && (
-        <div className="shrink-0 text-right">
+        <div className="shrink-0 sm:text-right">
           <div className="cifra text-3xl font-medium text-acento">{dato}</div>
           <div className="mt-1 text-[11px] uppercase tracking-[0.14em] text-faint">
             {datoEtiqueta}
