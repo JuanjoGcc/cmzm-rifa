@@ -1,9 +1,7 @@
 import Link from 'next/link';
+import { Portada } from '@/components/Portada';
+import { sesion } from '@/lib/auth';
 import { sql } from '@/lib/db';
-
-// Poné el archivo en `public/` y nombralo acá: `.mp4`/`.webm` se muestran como
-// video en loop, cualquier otra cosa como foto. Vacío no muestra nada.
-const PORTADA = '';
 
 const DESTINOS = [
   {
@@ -22,7 +20,7 @@ const DESTINOS = [
 ];
 
 export default async function Inicio() {
-  const [[config], [premios], [vendidos]] = await Promise.all([
+  const [[config], [premios], [vendidos], yo] = await Promise.all([
     sql<{
       titulo: string;
       bajada: string | null;
@@ -31,6 +29,7 @@ export default async function Inicio() {
     }>`select titulo, bajada, fecha_sorteo, precio_numero from config`,
     sql<{ n: string }>`select count(*) as n from premios`,
     sql<{ n: string | null }>`select sum(numeros) as n from participantes`,
+    sesion(),
   ]);
 
   const fecha = config?.fecha_sorteo
@@ -79,36 +78,18 @@ export default async function Inicio() {
           >
             Ver los premios
           </Link>
-          <Link
-            href="/participantes"
-            className="rounded border border-line px-4 py-2 text-sm text-muted transition-colors hover:border-faint hover:text-ink"
-          >
-            Quién compró
-          </Link>
+          {yo?.puedeEditar && (
+            <Link
+              href="/participantes"
+              className="rounded border border-line px-4 py-2 text-sm text-muted transition-colors hover:border-faint hover:text-ink"
+            >
+              Quién compró
+            </Link>
+          )}
         </div>
       </section>
 
-      {PORTADA && (
-        <div className="mt-10 overflow-hidden rounded-lg border border-line bg-raised">
-          {/\.(mp4|webm)$/.test(PORTADA) ? (
-            <video
-              src={PORTADA}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="aspect-video w-full object-cover"
-            />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element -- archivo estático en public/
-            <img
-              src={PORTADA}
-              alt="El team saltando"
-              className="aspect-video w-full object-cover"
-            />
-          )}
-        </div>
-      )}
+      <Portada />
 
       <section className="mt-14 grid gap-10 sm:grid-cols-[14rem_1fr] sm:gap-16">
         <h2 className="font-display text-lg font-medium tracking-tight">

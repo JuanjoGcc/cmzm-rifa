@@ -6,7 +6,8 @@ anota lo vendido y donde la gente mira cómo va.
 
 ## Qué es y qué no
 
-- **Ver no requiere login.** Cualquiera entra y ve premios y participantes.
+- **Ver no requiere login.** Cualquiera entra y ve el inicio y los premios.
+  La lista de participantes es solo para editores y super admins.
 - **Editar sí.** Y solo lo pueden hacer las cuentas de Google habilitadas.
 - No hay pagos, ni carrito, ni elección de números por parte del comprador.
   Nosotros vendemos y nosotros anotamos. Si algún día hace falta vender online,
@@ -54,6 +55,10 @@ rompa al cambiar de deployment, y el backup de la BDD ya incluye las imágenes.
 Lo que hace viable esa decisión es que **el navegador reescala la foto antes de
 subirla** (`components/FormPremio.tsx`, lado máximo 1000px): una foto de celular
 sin tocar serían ~4 MB de base64 por fila. Con el reescalado son ~100 KB.
+
+Las fotos del team que van pasando en el inicio son la excepción: son fijas y
+viven en `public/portada/`, así que van con el deploy y no hay nada que subir
+ni migrar.
 
 Techo conocido: si alguna vez hay decenas de premios o hace falta el original,
 se pasa a Vercel Blob y la columna guarda la URL. Hasta entonces esto sobra.
@@ -105,9 +110,9 @@ el usuario puede editar.
 ```
 app/
   layout.tsx            navbar + fuentes; lee el título de la rifa
-  page.tsx              inicio: de qué es la rifa, cuotas y quién vende
+  page.tsx              inicio: de qué es la rifa, las fotos del team y las cifras
   premios/              público; el formulario aparece solo si podés editar
-  participantes/        idem, con la tabla y el contador −/+
+  participantes/        solo editores: la tabla y el contador −/+
   admin/                solo super admin: permisos y datos de la rifa
   actions.ts            TODAS las escrituras, cada una con su chequeo
   api/auth/[...nextauth]/route.ts

@@ -15,12 +15,24 @@ type Participante = {
 };
 
 export default async function ParticipantesPage() {
-  const [participantes, [config], yo] = await Promise.all([
+  const yo = await sesion();
+
+  if (!yo?.puedeEditar) {
+    return (
+      <>
+        <Cabecera titulo="Participantes" />
+        <p className="text-sm text-muted">
+          Esta pantalla es solo para quienes pueden editar la rifa.
+        </p>
+      </>
+    );
+  }
+
+  const [participantes, [config]] = await Promise.all([
     sql<Participante>`
       select id, nombre, numeros, nota, creado
       from participantes order by numeros desc, nombre`,
     sql<{ precio_numero: number | null }>`select precio_numero from config`,
-    sesion(),
   ]);
 
   const total = participantes.reduce((n, p) => n + p.numeros, 0);
@@ -53,7 +65,7 @@ export default async function ParticipantesPage() {
                   Total
                 </th>
               )}
-              {yo?.puedeEditar && <th className="w-px pb-2 pl-4" />}
+              <th className="w-px pb-2 pl-4" />
             </tr>
           </thead>
           <tbody>
@@ -69,11 +81,7 @@ export default async function ParticipantesPage() {
                   )}
                 </td>
                 <td className="py-3 pl-4 text-right align-top">
-                  {yo?.puedeEditar ? (
-                    <Contador id={p.id} numeros={p.numeros} />
-                  ) : (
-                    <span className="cifra">{p.numeros}</span>
-                  )}
+                  <Contador id={p.id} numeros={p.numeros} />
                 </td>
                 {precio !== null && (
                   <td className="cifra hidden py-3 pl-4 text-right align-top text-muted sm:table-cell">
@@ -84,22 +92,20 @@ export default async function ParticipantesPage() {
                     })}
                   </td>
                 )}
-                {yo?.puedeEditar && (
-                  <td className="py-3 pl-4 text-right align-top">
-                    <BotonBorrar
-                      id={p.id}
-                      accion={borrarParticipante}
-                      que={p.nombre}
-                    />
-                  </td>
-                )}
+                <td className="py-3 pl-4 text-right align-top">
+                  <BotonBorrar
+                    id={p.id}
+                    accion={borrarParticipante}
+                    que={p.nombre}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
 
-      {yo?.puedeEditar && <FormParticipante />}
+      <FormParticipante />
     </>
   );
 }
