@@ -7,15 +7,17 @@ const DESTINOS = [
   {
     titulo: 'Tres garrochas usadas',
     detalle:
-      'Reservadas para el team. Son el material que hoy falta y lo que más limita entrenar.',
+      'Queremos incorporar nuevas garrochas para que nuestros atletas cuenten con más material disponible y mejores condiciones para entrenar.',
   },
   {
-    titulo: 'Materiales de lanzamiento',
-    detalle: 'Implementos para sumar la rama de lanzamientos a los entrenamientos.',
+    titulo: 'Materiales para lanzamiento',
+    detalle:
+      'Queremos ampliar nuestras posibilidades de entrenamiento incorporando material que nos permita desarrollar y potenciar el área de lanzamientos dentro del equipo.',
   },
   {
-    titulo: 'Un anexo a la bodega',
-    detalle: 'Para guardar los materiales del club sin que se arruinen a la intemperie.',
+    titulo: 'Una nueva bodega',
+    detalle:
+      'Queremos construir un anexo para la bodega que nos permita almacenar y proteger los materiales que utilizamos en nuestros entrenamientos.',
   },
 ];
 
@@ -61,14 +63,14 @@ export default async function Inicio() {
     <>
       <section className="border-b border-line pb-10">
         <p className="text-[11px] uppercase tracking-[0.14em] text-acento">
-          Team Famas de Garrochas
+          Equipo de atletismo MCM
         </p>
         <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
           {config?.titulo ?? 'Rifa CMZM'}
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted">
           {config?.bajada ??
-            'Juntamos plata para comprar garrochas, materiales de lanzamiento y levantar un anexo a la bodega del club. Los números se venden en persona; acá se anota lo vendido y se mira cómo va.'}
+            'Queremos seguir creciendo y mejorar nuestros entrenamientos. Por eso estamos realizando esta rifa para reunir fondos que nos permitan incorporar nuevo material y mejorar nuestros espacios. Cada número que compras es un aporte directo al desarrollo de nuestro equipo.'}
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -93,7 +95,7 @@ export default async function Inicio() {
 
       <section className="mt-14 grid gap-10 sm:grid-cols-[14rem_1fr] sm:gap-16">
         <h2 className="font-display text-lg font-medium tracking-tight">
-          En qué se usa la plata
+          ¿A qué destinaremos lo recaudado?
         </h2>
         <ul className="divide-y divide-line">
           {DESTINOS.map((d) => (
