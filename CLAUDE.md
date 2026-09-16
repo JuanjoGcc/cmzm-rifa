@@ -1,16 +1,14 @@
 # Rifa MZM
 
-Página pública de una rifa: los premios con foto y la lista de quién compró
-cuántos números. Los números se venden en persona; esta página es donde se
-anota lo vendido y donde la gente mira cómo va.
+Página pública de una rifa: muestra los premios con foto, el objetivo de la
+recaudación y los datos del sorteo. Los números se venden en persona.
 
 ## Qué es y qué no
 
 - **Ver no requiere login.** Cualquiera entra y ve el inicio y los premios.
-  La lista de participantes es solo para editores y super admins.
 - **Editar sí.** Y solo lo pueden hacer las cuentas de Google habilitadas.
 - No hay pagos, ni carrito, ni elección de números por parte del comprador.
-  Nosotros vendemos y nosotros anotamos. Si algún día hace falta vender online,
+  Si algún día hace falta vender online,
   eso es otra app, no un parche sobre esta.
 
 ## Stack
@@ -19,7 +17,7 @@ anota lo vendido y donde la gente mira cómo va.
 |---|---|---|
 | Framework | Next.js 16, App Router | Server actions: el CRUD son funciones, no rutas de API |
 | Estilos | Tailwind v4 | Sin shadcn ni Radix: la app tiene un dropdown y dos formularios |
-| BDD | Postgres con `pg` y SQL a mano | Cuatro tablas. Un ORM sería más código que el esquema |
+| BDD | Postgres con `pg` y SQL a mano | Tres tablas. Un ORM sería más código que el esquema |
 | Login | Auth.js (`next-auth@beta`), Google | Mismo `@auth/core` que el repo de vigas, misma config en GCP |
 | Fotos | Data URL en una columna `text` | Ver "Las fotos" abajo |
 
@@ -112,7 +110,6 @@ app/
   layout.tsx            navbar + fuentes; lee el título de la rifa
   page.tsx              inicio: de qué es la rifa, las fotos del team y las cifras
   premios/              público; el formulario aparece solo si podés editar
-  participantes/        solo editores: la tabla y el contador −/+
   admin/                solo super admin: permisos y datos de la rifa
   actions.ts            TODAS las escrituras, cada una con su chequeo
   api/auth/[...nextauth]/route.ts

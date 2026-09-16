@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Portada } from '@/components/Portada';
-import { sesion } from '@/lib/auth';
 import { sql } from '@/lib/db';
 
 const DESTINOS = [
@@ -22,7 +21,7 @@ const DESTINOS = [
 ];
 
 export default async function Inicio() {
-  const [[config], [premios], [vendidos], yo] = await Promise.all([
+  const [[config], [premios]] = await Promise.all([
     sql<{
       titulo: string;
       bajada: string | null;
@@ -30,8 +29,6 @@ export default async function Inicio() {
       precio_numero: number | null;
     }>`select titulo, bajada, fecha_sorteo, precio_numero from config`,
     sql<{ n: string }>`select count(*) as n from premios`,
-    sql<{ n: string | null }>`select sum(numeros) as n from participantes`,
-    sesion(),
   ]);
 
   const fecha = config?.fecha_sorteo
@@ -45,7 +42,6 @@ export default async function Inicio() {
 
   const cifras = [
     { dato: premios?.n ?? '0', etiqueta: 'Premios' },
-    { dato: vendidos?.n ?? '0', etiqueta: 'Números vendidos' },
     config?.precio_numero
       ? {
           dato: config.precio_numero.toLocaleString('es-CL', {
@@ -80,14 +76,6 @@ export default async function Inicio() {
           >
             Ver los premios
           </Link>
-          {yo?.puedeEditar && (
-            <Link
-              href="/participantes"
-              className="rounded border border-line px-4 py-2 text-sm text-muted transition-colors hover:border-faint hover:text-ink"
-            >
-              Quién compró
-            </Link>
-          )}
         </div>
       </section>
 
@@ -111,7 +99,7 @@ export default async function Inicio() {
         </ul>
       </section>
 
-      <dl className="mt-14 grid grid-cols-2 gap-y-6 border-t border-line pt-5 sm:grid-cols-4">
+      <dl className="mt-14 grid grid-cols-2 gap-y-6 border-t border-line pt-5 sm:grid-cols-3">
         {cifras.map((c) => (
           <div key={c.etiqueta}>
             <dd className="cifra text-2xl font-medium">{c.dato}</dd>

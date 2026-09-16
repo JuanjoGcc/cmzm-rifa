@@ -64,40 +64,6 @@ export async function borrarPremio(premioId: number) {
   revalidatePath('/premios');
 }
 
-// --- Participantes ---------------------------------------------------------
-
-export async function crearParticipante(fd: FormData) {
-  await requiereEditor();
-  const nombre = v.textoRequerido(fd, 'nombre', 120);
-  const numeros = v.entero(fd.get('numeros'), 1, 100_000, 'Los números');
-  const nota = v.texto(fd, 'nota', 200);
-
-  await sql`
-    insert into participantes (nombre, numeros, nota)
-    values (${nombre}, ${numeros}, ${nota})`;
-  revalidatePath('/participantes');
-}
-
-/**
- * Suma (o resta) números a alguien que ya está en la lista.
- * En la vida real se vende de a poco y la misma persona vuelve a comprar; sin
- * esto habría que borrar la fila y recrearla con el total a mano.
- */
-export async function ajustarNumeros(participanteId: number, delta: number) {
-  await requiereEditor();
-  const d = v.entero(delta, -1000, 1000, 'El ajuste');
-  await sql`
-    update participantes set numeros = numeros + ${d}
-    where id = ${v.id(participanteId)} and numeros + ${d} >= 1`;
-  revalidatePath('/participantes');
-}
-
-export async function borrarParticipante(participanteId: number) {
-  await requiereEditor();
-  await sql`delete from participantes where id = ${v.id(participanteId)}`;
-  revalidatePath('/participantes');
-}
-
 // --- Config de la rifa -----------------------------------------------------
 
 export async function guardarConfig(fd: FormData) {
