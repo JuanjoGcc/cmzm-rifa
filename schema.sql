@@ -22,14 +22,6 @@ create table if not exists premios (
   creado      timestamptz not null default now()
 );
 
-create table if not exists participantes (
-  id      serial primary key,
-  nombre  text    not null,
-  numeros integer not null check (numeros > 0),
-  nota    text,
-  creado  timestamptz not null default now()
-);
-
 -- Una sola fila, forzada por el check sobre la PK.
 create table if not exists config (
   id             boolean primary key default true check (id),

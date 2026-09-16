@@ -23,7 +23,7 @@ const mono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: 'Rifa CMZM',
-  description: 'Premios y participantes de la rifa.',
+  description: 'Conoce los premios y cómo apoyar la rifa del equipo de atletismo MCM.',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Rifa CMZM' },
 };
 
@@ -37,8 +37,7 @@ export const viewport: Viewport = {
 };
 
 // El layout lee el título de la BDD, así que sin esto Next intenta prerenderizar
-// `/` en build y el deploy se cae antes de que exista POSTGRES_URL. Además es lo
-// que queremos: los números se venden mientras la gente mira la página.
+// `/` en build y el deploy se cae antes de que exista POSTGRES_URL.
 export const dynamic = 'force-dynamic';
 
 export default async function RootLayout({
